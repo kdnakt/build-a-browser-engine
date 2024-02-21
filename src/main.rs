@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 mod dom;
+mod parser;
 
 fn main() {
     println!("Hello, world!");
@@ -21,4 +22,8 @@ fn main() {
     children.push(text);
     let html = dom::elem("html".to_string(), attrs, children);
     println!("{:?}", html);
+
+    let html = "<html><body><h1>Title</h1></body></html>";
+    let parser = parser::Parser::new(html.to_string());
+    println!("{}", parser.next_char());
 }
