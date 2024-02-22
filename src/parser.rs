@@ -20,7 +20,16 @@ impl Parser {
         return cur_char;
     }
 
-    pub fn next_char(&self) -> char {
+    fn consume_while<F>(&mut self, test: F) -> String
+            where F: Fn(char) -> bool {
+        let mut result = String::new();
+        while !self.eof() && test(self.next_char()) {
+            result.push(self.consume_char());
+        }
+        return result;
+    }
+
+    fn next_char(&self) -> char {
         self.input[self.pos..].chars().next().unwrap()
     }
 
@@ -28,7 +37,7 @@ impl Parser {
         self.input[self.pos..].starts_with(s)
     }
 
-    pub fn eof(&self) -> bool {
+    fn eof(&self) -> bool {
         self.pos >= self.input.len()
     }
 }
