@@ -12,6 +12,14 @@ impl Parser {
         }
     }
 
+    pub fn consume_char(&mut self) -> char {
+        let mut iter = self.input[self.pos..].char_indices();
+        let (_, cur_char) = iter.next().unwrap();
+        let (next_pos, _) = iter.next().unwrap_or((1, ' '));
+        self.pos += next_pos;
+        return cur_char;
+    }
+
     pub fn next_char(&self) -> char {
         self.input[self.pos..].chars().next().unwrap()
     }
