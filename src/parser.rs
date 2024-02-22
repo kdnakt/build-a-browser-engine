@@ -20,6 +20,13 @@ impl Parser {
         return cur_char;
     }
 
+    pub fn parse_tag_name(&mut self) -> String {
+        self.consume_while(|c| match c {
+            'a'..='z' | 'A'..='Z' | '0'..='9' => true,
+            _ => false
+        })
+    }
+
     fn consume_while<F>(&mut self, test: F) -> String
             where F: Fn(char) -> bool {
         let mut result = String::new();
@@ -33,7 +40,7 @@ impl Parser {
         self.input[self.pos..].chars().next().unwrap()
     }
 
-    pub fn starts_with(&self, s: &str) -> bool {
+    fn starts_with(&self, s: &str) -> bool {
         self.input[self.pos..].starts_with(s)
     }
 
