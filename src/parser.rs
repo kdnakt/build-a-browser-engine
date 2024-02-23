@@ -20,6 +20,12 @@ impl Parser {
         return cur_char;
     }
 
+    /// Consume and discard zero or more whitespace characters.
+    fn consume_whitespace(&mut self) {
+        self.consume_while(|c| c.is_whitespace());
+    }
+
+    /// Parse a tag or attribute name.
     pub fn parse_tag_name(&mut self) -> String {
         self.consume_while(|c| match c {
             'a'..='z' | 'A'..='Z' | '0'..='9' => true,
