@@ -1,3 +1,4 @@
+use crate::dom;
 
 pub struct Parser {
     pos: usize,
@@ -23,6 +24,32 @@ impl Parser {
     /// Consume and discard zero or more whitespace characters.
     fn consume_whitespace(&mut self) {
         self.consume_while(|c| c.is_whitespace());
+    }
+
+    /// Parse a single node.
+    pub fn parse_node(&mut self) -> dom::Node {
+        match self.next_char() {
+            '<' => self.parse_element(),
+            _ => self.parse_text(),
+        }
+    }
+
+    /// Parse a text node.
+    fn parse_text(&mut self) -> dom::Node {
+        dom::text(self.consume_while(|c| c != '<'))
+    }
+
+    /// Parse a single element
+    fn parse_element(&mut self) -> dom::Node {
+        assert!(self.consume_char() == '<');
+        let tag_name = self.parse_tag_name();
+        // TODO: parse attributes
+        let attrs = std::collections::HashMap::new();
+        // TODO: parse children
+        let children = Vec::new();
+        // TODO: assert closing tag
+
+        dom::elem(tag_name, attrs, children)
     }
 
     /// Parse a tag or attribute name.
