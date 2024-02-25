@@ -2,8 +2,8 @@ use std::collections::HashMap;
 
 #[derive(Debug)]
 pub struct Node {
-    children: Vec<Node>,
     node_type: NodeType,
+    children: Vec<Node>,
 }
 
 #[derive(Debug)]
