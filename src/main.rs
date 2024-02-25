@@ -25,5 +25,6 @@ fn main() {
 
     let html = "<html><body><h1>Title</h1></body></html>";
     let mut parser = parser::Parser::new(html.to_string());
-    println!("{}", parser.consume_char());
+    // println!("{}", parser.consume_char());
+    println!("parsed: {:?}", parser.parse_node());
 }
