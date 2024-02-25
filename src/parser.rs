@@ -1,4 +1,5 @@
 use crate::dom;
+use std::collections::HashMap;
 
 pub struct Parser {
     pos: usize,
@@ -43,8 +44,8 @@ impl Parser {
     fn parse_element(&mut self) -> dom::Node {
         assert!(self.consume_char() == '<');
         let tag_name = self.parse_tag_name();
-        // TODO: parse attributes
-        let attrs = std::collections::HashMap::new();
+        let attrs = self.parse_attributes();
+        assert!(self.consume_char() == '>');
         // TODO: parse children
         let children = Vec::new();
         // TODO: assert closing tag
@@ -52,10 +53,39 @@ impl Parser {
         dom::elem(tag_name, attrs, children)
     }
 
+    /// Parse a list of name="value" pairs, separated by whitespace.
+    fn parse_attributes(&mut self) -> dom::AttrMap {
+        let mut attributes = HashMap::new();
+        loop {
+            self.consume_whitespace();
+            if self.next_char() == '>' {
+                break;
+            }
+            let (name, value) = self.parse_attr();
+            attributes.insert(name, value);
+        }
+        attributes
+    }
+
+    fn parse_attr(&mut self) -> (String, String) {
+        let name = self.parse_tag_name();
+        assert!(self.consume_char() == '=');
+        let value = self.parse_attr_value();
+        (name, value)
+    }
+
+    fn parse_attr_value(&mut self) -> String {
+        let open_quote = self.consume_char();
+        assert!(open_quote == '"' || open_quote == '\'');
+        let value = self.consume_while(|c| c != open_quote);
+        assert!(self.consume_char() == open_quote);
+        value
+    }
+
     /// Parse a tag or attribute name.
     pub fn parse_tag_name(&mut self) -> String {
         self.consume_while(|c| match c {
-            'a'..='z' | 'A'..='Z' | '0'..='9' => true,
+            'a'..='z' | 'A'..='Z' | '0'..='9' | '-' => true,
             _ => false
         })
     }
