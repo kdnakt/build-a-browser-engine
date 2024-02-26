@@ -46,9 +46,13 @@ impl Parser {
         let tag_name = self.parse_tag_name();
         let attrs = self.parse_attributes();
         assert!(self.consume_char() == '>');
-        // TODO: parse children
-        let children = Vec::new();
-        // TODO: assert closing tag
+
+        let children = self.parse_nodes();
+
+        assert!(self.consume_char() == '<');
+        assert!(self.consume_char() == '/');
+        assert!(self.parse_tag_name() == tag_name);
+        assert!(self.consume_char() == '>');
 
         dom::elem(tag_name, attrs, children)
     }
@@ -80,6 +84,19 @@ impl Parser {
         let value = self.consume_while(|c| c != open_quote);
         assert!(self.consume_char() == open_quote);
         value
+    }
+
+    /// Parse a sequence of sibling nodes.
+    fn parse_nodes(&mut self) -> Vec<dom::Node> {
+        let mut nodes = Vec::new();
+        loop {
+            self.consume_whitespace();
+            if self.eof() || self.starts_with("</") {
+                break;
+            }
+            nodes.push(self.parse_node());
+        }
+        nodes
     }
 
     /// Parse a tag or attribute name.
