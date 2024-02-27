@@ -6,15 +6,29 @@ pub struct Parser {
     input: String,
 }
 
+/// Parse an HTML document and return the root element.
+pub fn parse(source: String) -> dom::Node {
+    let mut nodes = Parser {
+        pos: 0,
+        input: source,
+    }.parse_nodes();
+
+    if nodes.len() == 1 {
+        nodes.swap_remove(0)
+    } else {
+        dom::elem("html".to_string(), HashMap::new(), nodes)
+    }
+}
+
 impl Parser {
-    pub fn new(input: String) -> Parser {
+    fn new(input: String) -> Parser {
         Parser {
             pos: 0,
             input,
         }
     }
 
-    pub fn consume_char(&mut self) -> char {
+    fn consume_char(&mut self) -> char {
         let mut iter = self.input[self.pos..].char_indices();
         let (_, cur_char) = iter.next().unwrap();
         let (next_pos, _) = iter.next().unwrap_or((1, ' '));
@@ -28,7 +42,7 @@ impl Parser {
     }
 
     /// Parse a single node.
-    pub fn parse_node(&mut self) -> dom::Node {
+    fn parse_node(&mut self) -> dom::Node {
         match self.next_char() {
             '<' => self.parse_element(),
             _ => self.parse_text(),
@@ -100,7 +114,7 @@ impl Parser {
     }
 
     /// Parse a tag or attribute name.
-    pub fn parse_tag_name(&mut self) -> String {
+    fn parse_tag_name(&mut self) -> String {
         self.consume_while(|c| match c {
             'a'..='z' | 'A'..='Z' | '0'..='9' | '-' => true,
             _ => false
