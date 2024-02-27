@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Node {
     node_type: NodeType,
     children: Vec<Node>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum NodeType {
     Text(String),
     Element(ElementData),
@@ -14,7 +14,7 @@ pub enum NodeType {
 
 pub type AttrMap = HashMap<String, String>;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct ElementData {
     tag_name: String,
     attributes: AttrMap,
