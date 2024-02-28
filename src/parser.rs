@@ -164,3 +164,25 @@ fn test_simple_parse() {
 
     assert_eq!(expected, parsed);
 }
+
+#[test]
+fn parse_comment() {
+    let html = "<html lang='ja' data-theme='light'><!-- Title --></html>".to_string();
+    let parsed = parse(html);
+
+    let mut attrs = HashMap::new();
+    attrs.insert(
+        "lang".to_string(),
+        "ja".to_string()
+    );
+    attrs.insert(
+        "data-theme".to_string(),
+        "light".to_string()
+    );
+    let mut children = Vec::new();
+    let comment = dom::comment("Title".to_string());
+    children.push(comment);
+    let expected = dom::elem("html".to_string(), attrs, children);
+
+    assert_eq!(expected, parsed);
+}
