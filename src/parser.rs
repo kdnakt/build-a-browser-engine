@@ -54,9 +54,24 @@ impl Parser {
         dom::text(self.consume_while(|c| c != '<'))
     }
 
+    fn parse_comment(&mut self) -> dom::Node {
+        assert!(self.consume_char() == '!');
+        assert!(self.consume_char() == '-');
+        assert!(self.consume_char() == '-');
+        let value = self.consume_while(|c| c != '-');
+        assert!(self.consume_char() == '-');
+        assert!(self.consume_char() == '-');
+        assert!(self.consume_char() == '>');
+        dom::comment(value)
+    }
+
     /// Parse a single element
     fn parse_element(&mut self) -> dom::Node {
         assert!(self.consume_char() == '<');
+        match self.next_char() {
+            '!' => return self.parse_comment(),
+            _ => (),
+        }
         let tag_name = self.parse_tag_name();
         let attrs = self.parse_attributes();
         assert!(self.consume_char() == '>');
