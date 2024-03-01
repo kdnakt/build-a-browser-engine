@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+mod css;
 mod dom;
 mod parser;
 
