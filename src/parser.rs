@@ -195,7 +195,7 @@ fn parse_comment() {
         "light".to_string()
     );
     let mut children = Vec::new();
-    let comment = dom::comment("Title".to_string());
+    let comment = dom::comment(" Title ".to_string());
     children.push(comment);
     let expected = dom::elem("html".to_string(), attrs, children);
 
