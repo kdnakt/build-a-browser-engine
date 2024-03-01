@@ -70,14 +70,49 @@ impl Parser {
 
     fn parse_selectors(&mut self) -> Vec<Selector> {
         let mut selectors = Vec::new();
-        // TODO
+        loop {
+            selectors.push(Selector::Simple(self.parse_simple_selector()));
+        }
         selectors
+    }
+
+    fn parse_simple_selector(&mut self) -> SimpleSelector {
+        let mut selector = SimpleSelector {
+            tag_name: None,
+            id: None,
+            class: Vec::new(),
+        };
+        while !self.eof() {
+            match self.next_char() {
+                '#' => {
+                    self.consume_char();
+                    selector.id = Some(self.parse_identifier());
+                }
+                '.' => {
+                    self.consume_char();
+                    selector.class.push(self.parse_identifier());
+                }
+                '*' => {
+                    // universal selector
+                    self.consume_char();
+                }
+                c if valid_identifier_char(c) => {
+                    selector.tag_name = Some(self.parse_identifier());
+                }
+                _ => break
+            }
+        }
+        selector
     }
 
     fn parse_declarations(&mut self) -> Vec<Declaration> {
         let mut declarations = Vec::new();
         // TODO
         declarations
+    }
+
+    fn parse_identifier(&mut self) -> String {
+        self.consume_while(valid_identifier_char)
     }
 
     fn consume_whitespace(&mut self) {
@@ -109,4 +144,11 @@ impl Parser {
         self.pos >= self.input.len()
     }
 
+}
+
+fn valid_identifier_char(c: char) -> bool {
+    match c {
+        'a'..='z' | 'A'..='Z' | '0'..='9' | '-' | '_' => true,
+        _ => false,
+    }
 }
