@@ -72,7 +72,17 @@ impl Parser {
         let mut selectors = Vec::new();
         loop {
             selectors.push(Selector::Simple(self.parse_simple_selector()));
+            self.consume_whitespace();
+            match self.next_char() {
+                ',' => {
+                    self.consume_char();
+                    self.consume_whitespace();
+                }
+                '{' => break,
+                c => panic!("Unexpected character {c} in selector list")
+            }
         }
+        selectors.sort_by(|a,b| b.specificity().cmp(&a.specificity()));
         selectors
     }
 
