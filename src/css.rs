@@ -116,9 +116,48 @@ impl Parser {
     }
 
     fn parse_declarations(&mut self) -> Vec<Declaration> {
+        assert_eq!(self.consume_char(), '{');
         let mut declarations = Vec::new();
-        // TODO
+        loop {
+            self.consume_whitespace();
+            if self.next_char() == '}' {
+                self.consume_char();
+                break;
+            }
+            declarations.push(self.parse_declaration());
+        }
         declarations
+    }
+
+    fn parse_declaration(&mut self) -> Declaration {
+        let property_name = self.parse_identifier();
+        self.consume_whitespace();
+        assert_eq!(self.consume_char(), ':');
+        self.consume_whitespace();
+        let value = self.parse_value();
+        self.consume_whitespace();
+        assert_eq!(self.consume_char(), ';');
+
+        Declaration {
+            name: property_name,
+            value,
+        }
+    }
+
+    fn parse_value(&mut self) -> Value {
+        match self.next_char() {
+            '0'..='9' => self.parse_length(),
+            '#' => self.parse_color(),
+            _ => Value::Keyword(self.parse_identifier())
+        }
+    }
+
+    fn parse_length(&mut self) -> Value {
+        todo!()
+    }
+
+    fn parse_color(&mut self) -> Value {
+        todo!()
     }
 
     fn parse_identifier(&mut self) -> String {
