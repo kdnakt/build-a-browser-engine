@@ -153,6 +153,14 @@ impl Parser {
     }
 
     fn parse_length(&mut self) -> Value {
+        Value::Length(self.parse_float(), self.parse_unit())
+    }
+
+    fn parse_float(&mut self) -> f32 {
+        todo!()
+    }
+
+    fn parse_unit(&mut self) -> Unit {
         todo!()
     }
 
