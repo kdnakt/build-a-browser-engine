@@ -157,7 +157,11 @@ impl Parser {
     }
 
     fn parse_float(&mut self) -> f32 {
-        todo!()
+        let s = self.consume_while(|c| match c {
+            '0'..='9' | '.' => true,
+            _ => false,
+        });
+        s.parse().unwrap()
     }
 
     fn parse_unit(&mut self) -> Unit {
