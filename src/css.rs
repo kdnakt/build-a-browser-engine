@@ -165,10 +165,23 @@ impl Parser {
     }
 
     fn parse_unit(&mut self) -> Unit {
-        todo!()
+        match &*self.parse_identifier().to_ascii_lowercase() {
+            "px" => Unit::Px,
+            _ => panic!("unrecognized unit")
+        }
     }
 
     fn parse_color(&mut self) -> Value {
+        assert_eq!(self.consume_char(), '#');
+        Value::ColorValue(Color {
+            r: self.parse_hex_pair(),
+            g: self.parse_hex_pair(),
+            b: self.parse_hex_pair(),
+            a: 255
+        })
+    }
+
+    fn parse_hex_pair(&mut self) -> u8 {
         todo!()
     }
 
