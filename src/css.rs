@@ -1,38 +1,46 @@
 
+#[derive(Debug)]
 pub struct Stylesheet {
     pub rules: Vec<Rule>,
 }
 
+#[derive(Debug)]
 pub struct Rule {
     selectors: Vec<Selector>,
     declarations: Vec<Declaration>,
 }
 
+#[derive(Debug)]
 pub enum Selector {
     Simple(SimpleSelector),
 }
 
+#[derive(Debug)]
 pub struct SimpleSelector {
     tag_name: Option<String>,
     id: Option<String>,
     class: Vec<String>,
 }
 
+#[derive(Debug)]
 pub struct Declaration {
     name: String,
     value: Value,
 }
 
+#[derive(Debug)]
 pub enum Value {
     Keyword(String),
     Length(f32, Unit),
     ColorValue(Color),
 }
 
+#[derive(Debug)]
 pub enum Unit {
     Px,
 }
 
+#[derive(Debug)]
 pub struct Color {
     r: u8,
     g: u8,
@@ -237,4 +245,10 @@ impl Selector {
         let c = simple.tag_name.iter().count();
         (a, b, c)
     }
+}
+
+#[test]
+fn parse_simple_css() {
+    let parsed = parse("body { margin: 8px; }".to_string());
+    println!("{:?}", parsed);
 }
