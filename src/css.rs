@@ -190,7 +190,9 @@ impl Parser {
     }
 
     fn parse_hex_pair(&mut self) -> u8 {
-        todo!()
+        let s = &self.input[self.pos .. self.pos + 2];
+        self.pos += 2;
+        u8::from_str_radix(s, 16).unwrap()
     }
 
     fn parse_identifier(&mut self) -> String {
