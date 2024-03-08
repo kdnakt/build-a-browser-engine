@@ -21,13 +21,6 @@ pub fn parse(source: String) -> dom::Node {
 }
 
 impl Parser {
-    fn new(input: String) -> Parser {
-        Parser {
-            pos: 0,
-            input,
-        }
-    }
-
     fn consume_char(&mut self) -> char {
         let mut iter = self.input[self.pos..].char_indices();
         let (_, cur_char) = iter.next().unwrap();
