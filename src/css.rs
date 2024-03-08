@@ -271,3 +271,31 @@ fn parse_simple_css() {
     let expected = Stylesheet { rules };
     assert_eq!(expected, parsed);
 }
+
+#[test]
+fn parse_rgb_color() {
+    let parsed = parse("body { background: #FF0000; }".to_string());
+    let mut selectors = Vec::new();
+    selectors.push(Selector::Simple(SimpleSelector {
+        tag_name: Some("body".to_string()),
+        id: None,
+        class: Vec::new(),
+    }));
+    let mut declarations = Vec::new();
+    declarations.push(Declaration {
+        name: "background".to_string(),
+        value: Value::ColorValue(Color{
+            r: 255,
+            g: 0,
+            b: 0,
+            a: 255,
+        }),
+    });
+    let mut rules = Vec::new();
+    rules.push(Rule {
+        selectors,
+        declarations,
+    });
+    let expected = Stylesheet { rules };
+    assert_eq!(expected, parsed);
+}
