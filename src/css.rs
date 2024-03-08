@@ -1,46 +1,46 @@
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Stylesheet {
     pub rules: Vec<Rule>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Rule {
     selectors: Vec<Selector>,
     declarations: Vec<Declaration>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Selector {
     Simple(SimpleSelector),
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct SimpleSelector {
     tag_name: Option<String>,
     id: Option<String>,
     class: Vec<String>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Declaration {
     name: String,
     value: Value,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Value {
     Keyword(String),
     Length(f32, Unit),
     ColorValue(Color),
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Unit {
     Px,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Color {
     r: u8,
     g: u8,
@@ -252,5 +252,22 @@ impl Selector {
 #[test]
 fn parse_simple_css() {
     let parsed = parse("body { margin: 8px; }".to_string());
-    println!("{:?}", parsed);
+    let mut selectors = Vec::new();
+    selectors.push(Selector::Simple(SimpleSelector {
+        tag_name: Some("body".to_string()),
+        id: None,
+        class: Vec::new(),
+    }));
+    let mut declarations = Vec::new();
+    declarations.push(Declaration {
+        name: "margin".to_string(),
+        value: Value::Length(8.0, Unit::Px),
+    });
+    let mut rules = Vec::new();
+    rules.push(Rule {
+        selectors,
+        declarations,
+    });
+    let expected = Stylesheet { rules };
+    assert_eq!(expected, parsed);
 }
