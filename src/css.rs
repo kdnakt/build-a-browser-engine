@@ -48,6 +48,10 @@ pub struct Color {
     a: u8,
 }
 
+const COLOR_NAME: &[&str] = &[
+    "red",
+];
+
 pub fn parse(source: String) -> Stylesheet {
     let mut parser = Parser { pos: 0, input: source };
     Stylesheet { rules: parser.parse_rules() }
@@ -156,7 +160,19 @@ impl Parser {
         match self.next_char() {
             '0'..='9' => self.parse_length(),
             '#' => self.parse_color(),
-            _ => Value::Keyword(self.parse_identifier())
+            _ => {
+                let id = self.parse_identifier();
+                if COLOR_NAME.contains(&id.as_str()) {
+                    Value::ColorValue(Color {
+                        r: 255,
+                        g: 0,
+                        b: 0,
+                        a: 255
+                    })
+                } else {
+                    Value::Keyword(id)
+                }
+            }
         }
     }
 
