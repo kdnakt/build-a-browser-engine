@@ -318,7 +318,7 @@ fn parse_rgb_color() {
 }
 
 #[test]
-fn parse_color_name() {
+fn parse_color_name_red() {
     let parsed = parse("body { background: red; }".to_string());
     let mut selectors = Vec::new();
     selectors.push(Selector::Simple(SimpleSelector {
@@ -333,6 +333,34 @@ fn parse_color_name() {
             r: 255,
             g: 0,
             b: 0,
+            a: 255,
+        }),
+    });
+    let mut rules = Vec::new();
+    rules.push(Rule {
+        selectors,
+        declarations,
+    });
+    let expected = Stylesheet { rules };
+    assert_eq!(expected, parsed);
+}
+
+#[test]
+fn parse_color_name_blue() {
+    let parsed = parse("body { background: blue; }".to_string());
+    let mut selectors = Vec::new();
+    selectors.push(Selector::Simple(SimpleSelector {
+        tag_name: Some("body".to_string()),
+        id: None,
+        class: Vec::new(),
+    }));
+    let mut declarations = Vec::new();
+    declarations.push(Declaration {
+        name: "background".to_string(),
+        value: Value::ColorValue(Color{
+            r: 0,
+            g: 0,
+            b: 255,
             a: 255,
         }),
     });
