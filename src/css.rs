@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+use lazy_static::lazy_static;
 
 #[derive(Debug, PartialEq)]
 pub struct Stylesheet {
@@ -48,9 +50,14 @@ pub struct Color {
     a: u8,
 }
 
-const COLOR_NAME: &[&str] = &[
-    "red",
-];
+lazy_static! {
+    static ref COLOR_NAME: HashMap<&'static str, Vec<u8>> = {
+        let mut map = HashMap::new();
+        map.insert("red", vec![255, 0, 0]);
+        map.insert("blue", vec![0, 0, 255]);
+        map
+    };
+}
 
 pub fn parse(source: String) -> Stylesheet {
     let mut parser = Parser { pos: 0, input: source };
@@ -162,11 +169,12 @@ impl Parser {
             '#' => self.parse_color(),
             _ => {
                 let id = self.parse_identifier();
-                if COLOR_NAME.contains(&id.as_str()) {
+                if COLOR_NAME.contains_key(&id.as_str()) {
+                    let color = COLOR_NAME.get(&id.as_str()).unwrap();
                     Value::ColorValue(Color {
-                        r: 255,
-                        g: 0,
-                        b: 0,
+                        r: color[0],
+                        g: color[1],
+                        b: color[2],
                         a: 255
                     })
                 } else {
