@@ -3,6 +3,7 @@ use std::collections::HashMap;
 mod css;
 mod dom;
 mod parser;
+mod style;
 
 fn main() {
     println!("Hello, world!");
