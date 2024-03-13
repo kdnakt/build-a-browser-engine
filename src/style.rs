@@ -1,8 +1,10 @@
 use std::collections::HashMap;
 use crate::css::{
+    Rule,
     Selector,
     Selector::Simple,
     SimpleSelector,
+    Specificity,
     Value,
 };
 use crate::dom::{
@@ -19,6 +21,8 @@ struct StyledNode<'a> {
     specified_values: PropertyMap,
     children: Vec<StyledNode<'a>>,
 }
+
+type MatchedRule<'a> = (Specificity, &'a Rule);
 
 fn matches(elem: &ElementData, selector: &Selector) -> bool {
     match *selector {
