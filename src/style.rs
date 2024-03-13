@@ -27,5 +27,18 @@ fn matches(elem: &ElementData, selector: &Selector) -> bool {
 }
 
 fn matches_simple_selector(elem: &ElementData, selector: &SimpleSelector) -> bool {
-    todo!()
+    if selector.tag_name.iter().any(|name| elem.tag_name != *name) {
+        return false;
+    }
+
+    if selector.id.iter().any(|id| elem.id() != Some(id)) {
+        return false;
+    }
+
+    let elem_classes = elem.classes();
+    if selector.class.iter().any(|class| !elem_classes.contains(&**class)) {
+        return false;
+    }
+
+    return true;
 }

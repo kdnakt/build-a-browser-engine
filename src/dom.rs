@@ -20,7 +20,7 @@ pub type AttrMap = HashMap<String, String>;
 
 #[derive(Debug, PartialEq)]
 pub struct ElementData {
-    tag_name: String,
+    pub tag_name: String,
     attributes: AttrMap,
 }
 
