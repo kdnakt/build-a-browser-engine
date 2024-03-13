@@ -8,7 +8,7 @@ pub struct Stylesheet {
 
 #[derive(Debug, PartialEq)]
 pub struct Rule {
-    selectors: Vec<Selector>,
+    pub selectors: Vec<Selector>,
     declarations: Vec<Declaration>,
 }
 

@@ -24,6 +24,12 @@ struct StyledNode<'a> {
 
 type MatchedRule<'a> = (Specificity, &'a Rule);
 
+fn match_rule<'a>(elem: &ElementData, rule: &'a Rule) -> Option<MatchedRule<'a>> {
+    rule.selectors.iter()
+        .find(|s| matches(elem, *s))
+        .map(|s| (s.specificity(), rule))
+}
+
 fn matches(elem: &ElementData, selector: &Selector) -> bool {
     match *selector {
         Simple(ref simple_selector) => matches_simple_selector(elem, simple_selector)
