@@ -9,7 +9,7 @@ pub struct Stylesheet {
 #[derive(Debug, PartialEq)]
 pub struct Rule {
     pub selectors: Vec<Selector>,
-    declarations: Vec<Declaration>,
+    pub declarations: Vec<Declaration>,
 }
 
 #[derive(Debug, PartialEq)]
@@ -26,23 +26,23 @@ pub struct SimpleSelector {
 
 #[derive(Debug, PartialEq)]
 pub struct Declaration {
-    name: String,
-    value: Value,
+    pub name: String,
+    pub value: Value,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Value {
     Keyword(String),
     Length(f32, Unit),
     ColorValue(Color),
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Unit {
     Px,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Color {
     r: u8,
     g: u8,

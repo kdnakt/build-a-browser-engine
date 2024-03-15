@@ -59,3 +59,17 @@ fn matches_simple_selector(elem: &ElementData, selector: &SimpleSelector) -> boo
 
     return true;
 }
+
+fn specified_values(elem: &ElementData, stylesheet: &Stylesheet) -> PropertyMap {
+    let mut values = HashMap::new();
+    let mut rules = matching_rules(elem, stylesheet);
+
+    rules.sort_by(|&(a, _), &(b, _)| a.cmp(&b));
+    for (_, rule) in rules {
+        for declaration in &rule.declarations {
+            values.insert(declaration.name.clone(), declaration.value.clone());
+        }
+    }
+
+    values
+}
