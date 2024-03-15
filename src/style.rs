@@ -5,6 +5,7 @@ use crate::css::{
     Selector::Simple,
     SimpleSelector,
     Specificity,
+    Stylesheet,
     Value,
 };
 use crate::dom::{
@@ -23,6 +24,12 @@ struct StyledNode<'a> {
 }
 
 type MatchedRule<'a> = (Specificity, &'a Rule);
+
+fn matching_rules<'a>(elem: &ElementData, stylesheet: &'a Stylesheet) -> Vec<MatchedRule<'a>> {
+    stylesheet.rules.iter()
+        .filter_map(|rule| match_rule(elem, rule))
+        .collect()
+}
 
 fn match_rule<'a>(elem: &ElementData, rule: &'a Rule) -> Option<MatchedRule<'a>> {
     rule.selectors.iter()
