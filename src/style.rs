@@ -11,6 +11,11 @@ use crate::css::{
 use crate::dom::{
     ElementData,
     Node,
+    NodeType::{
+        Element,
+        Text,
+        Comment,
+    },
 };
 
 /// Map from CSS property names to values.
@@ -72,4 +77,17 @@ fn specified_values(elem: &ElementData, stylesheet: &Stylesheet) -> PropertyMap 
     }
 
     values
+}
+
+/// Apply a stylesheet to an entire DOM tree, returning a StyledNode tree.
+pub fn style_tree<'a>(root: &'a Node, stylesheet: &'a Stylesheet) -> StyledNode<'a> {
+    StyledNode {
+        node: root,
+        specified_values: match root.node_type {
+            Element(ref elem) => specified_values(elem, stylesheet),
+            Text(_) => HashMap::new(),
+            Comment(_) => HashMap::new(),
+        },
+        children: root.children.iter().map(|c| style_tree(c, stylesheet)).collect(),
+    }
 }
