@@ -28,6 +28,7 @@ pub struct StyledNode<'a> {
     children: Vec<StyledNode<'a>>,
 }
 
+#[derive(Debug, PartialEq)]
 pub enum Display {
     Inline,
     Block,
@@ -42,6 +43,10 @@ impl<'a> StyledNode<'a> {
     pub fn lookup(&self, name: &str, fallback_name: &str, default: &Value) -> Value {
         self.value(name).unwrap_or_else(|| self.value(fallback_name)
                         .unwrap_or_else(|| default.clone()))
+    }
+
+    pub fn display(&self) -> Display {
+        todo!()
     }
 }
 
@@ -107,4 +112,12 @@ pub fn style_tree<'a>(root: &'a Node, stylesheet: &'a Stylesheet) -> StyledNode<
         },
         children: root.children.iter().map(|c| style_tree(c, stylesheet)).collect(),
     }
+}
+
+#[test]
+fn display_block() {
+    let root = crate::parser::parse("<div>Hello World!</div>".to_string());
+    let stylesheet = crate::css::parse("div { display: block; }".to_string());
+    let styled_node = style_tree(&root, &stylesheet);
+    assert_eq!(Display::Block, styled_node.display());
 }
