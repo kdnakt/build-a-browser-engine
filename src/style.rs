@@ -46,7 +46,14 @@ impl<'a> StyledNode<'a> {
     }
 
     pub fn display(&self) -> Display {
-        todo!()
+        match self.value("display") {
+            Some(Value::Keyword(s)) => match &*s {
+                "block" => Display::Block,
+                "none" => Display::None,
+                _ => Display::Inline
+            },
+            _ => Display::Inline
+        }
     }
 }
 
