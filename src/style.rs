@@ -128,3 +128,11 @@ fn display_block() {
     let styled_node = style_tree(&root, &stylesheet);
     assert_eq!(Display::Block, styled_node.display());
 }
+
+#[test]
+fn display_none() {
+    let root = crate::parser::parse("<div>Hello World!</div>".to_string());
+    let stylesheet = crate::css::parse("div { display: none; }".to_string());
+    let styled_node = style_tree(&root, &stylesheet);
+    assert_eq!(Display::None, styled_node.display());
+}
