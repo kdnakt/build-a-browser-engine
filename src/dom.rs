@@ -2,6 +2,7 @@ use std::collections::{
     HashMap,
     HashSet,
 };
+use crate::css::Stylesheet;
 
 #[derive(Debug, PartialEq)]
 pub struct Node {
@@ -21,7 +22,7 @@ pub type AttrMap = HashMap<String, String>;
 #[derive(Debug, PartialEq)]
 pub struct ElementData {
     pub tag_name: String,
-    attributes: AttrMap,
+    pub attributes: AttrMap,
 }
 
 impl ElementData {
@@ -34,6 +35,10 @@ impl ElementData {
             Some(classList) => classList.split(' ').collect(),
             None => HashSet::new()
         }
+    }
+
+    pub fn style(&self) -> Stylesheet {
+        todo!()
     }
 }
 
