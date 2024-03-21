@@ -130,6 +130,14 @@ fn display_block() {
 }
 
 #[test]
+fn display_inline() {
+    let root = crate::parser::parse("<div>Hello World!</div>".to_string());
+    let stylesheet = crate::css::parse("div { color: red; }".to_string());
+    let styled_node = style_tree(&root, &stylesheet);
+    assert_eq!(Display::Inline, styled_node.display());
+}
+
+#[test]
 fn display_none() {
     let root = crate::parser::parse("<div>Hello World!</div>".to_string());
     let stylesheet = crate::css::parse("div { display: none; }".to_string());
