@@ -6,7 +6,7 @@ use std::collections::HashMap;
 
 #[test]
 fn test_parse_style_attr() {
-    use robinson::{parser, dom};
+    use robinson::{parser, dom, css};
 
     let html = "<html style=\"color: red;\">Title</html>".to_string();
     let parsed = parser::parse(html);
@@ -15,7 +15,7 @@ fn test_parse_style_attr() {
         _ => panic!("element not found"),
     };
     let stylesheet = element_data.style();
-    println!("{:?}", stylesheet);
 
-    // TODO: assert
+    let expected = css::parse("html { color: red; }".to_string());
+    assert_eq!(expected, stylesheet);
 }
