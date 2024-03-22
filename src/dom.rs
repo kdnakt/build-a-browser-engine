@@ -2,6 +2,7 @@ use std::collections::{
     HashMap,
     HashSet,
 };
+use crate::css;
 use crate::css::Stylesheet;
 
 #[derive(Debug, PartialEq)]
@@ -38,7 +39,13 @@ impl ElementData {
     }
 
     pub fn style(&self) -> Stylesheet {
-        todo!()
+        let tag_name = &self.tag_name;
+        let style = match self.attributes.get("style") {
+            Some(style) => style,
+            None => ""
+        };
+        let source = format!("{tag_name} {{{style}}}");
+        css::parse(source)
     }
 }
 
