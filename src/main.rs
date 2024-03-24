@@ -4,6 +4,7 @@ mod css;
 mod dom;
 mod parser;
 mod style;
+mod layout;
 
 fn main() {
     println!("Hello, world!");
