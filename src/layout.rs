@@ -1,4 +1,4 @@
-
+use crate::style::StyledNode;
 
 struct Dimensions {
     /// Position of the content area relative to the document origin
@@ -21,4 +21,16 @@ struct EdgeSizes {
     right: f32,
     top: f32,
     bottom: f32,
+}
+
+struct LayoutBox<'a> {
+    dimensions: Dimensions,
+    box_type: BoxType<'a>,
+    children: Vec<LayoutBox<'a>>,
+}
+
+enum BoxType<'a> {
+    BlockNode(&'a StyledNode<'a>),
+    InlineNode(&'a StyledNode<'a>),
+    AnonymousBlock,
 }
