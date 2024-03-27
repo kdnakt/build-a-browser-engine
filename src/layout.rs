@@ -80,4 +80,16 @@ impl<'a> LayoutBox<'a> {
             }
         }
     }
+
+    fn layout(&mut self, containing_block: Dimensions) {
+        match self.box_type {
+            BoxType::BlockNode(_) => self.layout_block(containing_block),
+            BoxType::InlineNode(_) => {} // TODO
+            BoxType::AnonymousBlock => {} // TODO
+        }
+    }
+
+    fn layout_block(&mut self, containing_block: Dimensions) {
+        todo!();
+    }
 }
