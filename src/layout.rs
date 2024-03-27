@@ -68,7 +68,16 @@ impl<'a> LayoutBox<'a> {
         }
     }
 
-    fn get_inline_container(&mut self) -> &mut LayoutBox {
-        todo!()
+    fn get_inline_container(&mut self) -> &mut LayoutBox<'a> {
+        match self.box_type {
+            BoxType::InlineNode(_) | BoxType::AnonymousBlock => self,
+            BoxType::BlockNode(_) => {
+                match self.children.last() {
+                    Some(&LayoutBox { box_type: BoxType::AnonymousBlock, .. }) => {}
+                    _ => self.children.push(LayoutBox::new(BoxType::AnonymousBlock))
+                }
+                self.children.last_mut().unwrap()
+            }
+        }
     }
 }
