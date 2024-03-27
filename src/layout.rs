@@ -3,7 +3,7 @@ use crate::style::{
     StyledNode,
 };
 
-#[derive(Default)]
+#[derive(Clone, Copy, Default)]
 struct Dimensions {
     /// Position of the content area relative to the document origin
     content: Rect,
@@ -13,7 +13,7 @@ struct Dimensions {
     margin: EdgeSizes,
 }
 
-#[derive(Default)]
+#[derive(Clone, Copy, Default)]
 struct Rect {
     x: f32,
     y: f32,
@@ -21,7 +21,7 @@ struct Rect {
     height: f32,
 }
 
-#[derive(Default)]
+#[derive(Clone, Copy, Default)]
 struct EdgeSizes {
     left: f32,
     right: f32,
@@ -90,6 +90,35 @@ impl<'a> LayoutBox<'a> {
     }
 
     fn layout_block(&mut self, containing_block: Dimensions) {
+        // Child width can depend on parent width,
+        // so we need to calculate this box's width
+        // before laying out its children
+        self.calculate_block_width(containing_block);
+
+        // Determine where the box is located within its container
+        self.calculate_block_position(containing_block);
+
+        // Recursively lay out the children of this box
+        self.layout_block_children();
+
+        // Parent height can depend on child height,
+        // so calculate_height() must be called after the children are laid out
+        self.calculate_block_height();
+    }
+
+    fn calculate_block_width(&mut self, containing_block: Dimensions) {
+        todo!();
+    }
+
+    fn calculate_block_position(&mut self, containing_block: Dimensions) {
+        todo!();
+    }
+
+    fn layout_block_children(&mut self) {
+        todo!();
+    }
+
+    fn calculate_block_height(&mut self) {
         todo!();
     }
 }
