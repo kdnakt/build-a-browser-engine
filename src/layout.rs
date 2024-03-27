@@ -68,6 +68,13 @@ impl<'a> LayoutBox<'a> {
         }
     }
 
+    fn get_style_node(&self) -> &'a StyledNode<'a> {
+        match self.box_type {
+            BoxType::BlockNode(node) | BoxType::InlineNode(node) => node,
+            BoxType::AnonymousBlock => panic!("Anonymous block box has no style node")
+        }
+    }
+
     fn get_inline_container(&mut self) -> &mut LayoutBox<'a> {
         match self.box_type {
             BoxType::InlineNode(_) | BoxType::AnonymousBlock => self,
@@ -107,6 +114,8 @@ impl<'a> LayoutBox<'a> {
     }
 
     fn calculate_block_width(&mut self, containing_block: Dimensions) {
+        let style = self.get_style_node();
+
         todo!();
     }
 
