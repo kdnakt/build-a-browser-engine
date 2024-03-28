@@ -2,6 +2,13 @@ use crate::style::{
     Display,
     StyledNode,
 };
+use crate::css::{
+    Unit::Px,
+    Value::{
+        Keyword,
+        Length,
+    },
+};
 
 #[derive(Clone, Copy, Default)]
 struct Dimensions {
@@ -116,6 +123,10 @@ impl<'a> LayoutBox<'a> {
     fn calculate_block_width(&mut self, containing_block: Dimensions) {
         let style = self.get_style_node();
 
+        let auto = Keyword("auto".to_string());
+        let mut width = style.value("width").unwrap_or(auto.clone());
+
+        let zero = Length(0.0, Px);
         todo!();
     }
 
