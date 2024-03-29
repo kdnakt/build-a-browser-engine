@@ -127,6 +127,18 @@ impl<'a> LayoutBox<'a> {
         let mut width = style.value("width").unwrap_or(auto.clone());
 
         let zero = Length(0.0, Px);
+
+        let mut margin_left = style.lookup("margin-left", "margin", &zero);
+        let mut margin_right = style.lookup("margin-right", "margin", &zero);
+
+        let border_left = style.lookup("border-left-width", "border-width", &zero);
+        let border_right = style.lookup("border-right-width", "border-width", &zero);
+
+        let padding_left = style.lookup("padding-left", "padding", &zero);
+        let padding_right = style.lookup("padding-right", "padding", &zero);
+
+        let total = sum([&margin_left, &margin_right, &border_left, &border_right,
+                        &padding_left, &padding_right, &width].iter().map(|v| v.to_px()));
         todo!();
     }
 
@@ -141,4 +153,9 @@ impl<'a> LayoutBox<'a> {
     fn calculate_block_height(&mut self) {
         todo!();
     }
+}
+
+fn sum<I>(iter: I) -> f32
+    where I: Iterator<Item=f32> {
+    iter.fold(0., |a, b| a + b)
 }
