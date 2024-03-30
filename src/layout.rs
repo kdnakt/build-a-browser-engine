@@ -139,6 +139,18 @@ impl<'a> LayoutBox<'a> {
 
         let total = sum([&margin_left, &margin_right, &border_left, &border_right,
                         &padding_left, &padding_right, &width].iter().map(|v| v.to_px()));
+
+        // If width isn't auto and the total is wider than the container,
+        // treat auto margins as 0
+        if width != auto && total > containing_block.content.width {
+            if margin_left == auto {
+                margin_left = Length(0.0, Px);
+            }
+            if margin_right == auto {
+                margin_right = Length(0.0, Px);
+            }
+        }
+
         todo!();
     }
 
