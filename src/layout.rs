@@ -151,6 +151,39 @@ impl<'a> LayoutBox<'a> {
             }
         }
 
+        // Adjust used values so that the above sum equals `containing_block.width`.
+        // Each arm of the match should increase the total width by exactly `underflow`,
+        // and afterward all values should be absolute length in px.
+        let underflow = containing_block.content.width - total;
+
+        match (width == auto, margin_left == auto, margin_right == auto) {
+            // If the values are overconstrained, calculate margin_right.
+            (false, false, false) => {
+                margin_right = Length(margin_right.to_px() + underflow, Px);
+            }
+            // If exactly one size is auto, its used value follows from the equality.
+            (false, false, true) => { margin_right = Length(underflow, Px); }
+            (false, true, false) => { margin_left = Length(underflow, Px); }
+            // If width is set to auto, any other auto values become 0.
+            (true, _, _) => {
+                if margin_left == auto { margin_left = Length(0.0, Px); }
+                if margin_right == auto { margin_right = Length(0.0, Px); }
+                if underflow >= 0.0 {
+                    // Expand width to fill the overflow.
+                    width = Length(underflow, Px);
+                } else {
+                    // Width can't be negative. Adjust the right margin instead.
+                    width = Length(0.0, Px);
+                    margin_right = Length(margin_right.to_px() + underflow, Px);
+                }
+            }
+            // If margin-left and margin-right are both auto, their used values are equal.
+            (false, true, true) => {
+                margin_left = Length(underflow / 2.0, Px);
+                margin_right = Length(underflow / 2.0, Px);
+            }
+        }
+
         todo!();
     }
 
