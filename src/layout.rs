@@ -214,11 +214,39 @@ impl<'a> LayoutBox<'a> {
     }
 
     fn layout_block_children(&mut self) {
-        todo!();
+        let d = &mut self.dimensions;
+        for child in &mut self.children {
+            child.layout(*d);
+            // Increment the height so each child is laid out below the previous one.
+            d.content.height = d.content.height + child.dimensions.margin_box().height;
+        }
     }
 
     fn calculate_block_height(&mut self) {
         todo!();
+    }
+}
+
+impl Rect {
+    fn expanded_by(self, edge: EdgeSizes) -> Rect {
+        Rect {
+            x: self.x - edge.left,
+            y: self.y - edge.top,
+            width: self.width + edge.left + edge.right,
+            height: self.height + edge.top + edge.bottom,
+        }
+    }
+}
+
+impl Dimensions {
+    fn margin_box(self) -> Rect {
+        self.border_box().expanded_by(self.margin)
+    }
+    fn border_box(self) -> Rect {
+        self.padding_box().expanded_by(self.border)
+    }
+    fn padding_box(self) -> Rect {
+        self.content.expanded_by(self.padding)
     }
 }
 
