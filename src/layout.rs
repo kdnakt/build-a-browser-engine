@@ -195,7 +195,22 @@ impl<'a> LayoutBox<'a> {
     }
 
     fn calculate_block_position(&mut self, containing_block: Dimensions) {
-        todo!();
+        let style = self.get_style_node();
+        let d = &mut self.dimensions;
+
+        let zero = Length(0.0, Px);
+
+        d.margin.top = style.lookup("margin-top", "margin", &zero).to_px();
+        d.margin.bottom = style.lookup("margin-bottom", "margin", &zero).to_px();
+        d.border.top = style.lookup("border-top-width", "border-width", &zero).to_px();
+        d.border.bottom = style.lookup("border-bottom-width", "border-width", &zero).to_px();
+        d.padding.top = style.lookup("padding-top", "padding", &zero).to_px();
+        d.padding.bottom = style.lookup("padding-bottom", "padding", &zero).to_px();
+
+        d.content.x = containing_block.content.x +
+                d.margin.left + d.border.left + d.padding.left;
+        d.content.y = containing_block.content.y +
+                d.margin.top + d.border.top + d.padding.top;
     }
 
     fn layout_block_children(&mut self) {
