@@ -209,7 +209,7 @@ impl<'a> LayoutBox<'a> {
 
         d.content.x = containing_block.content.x +
                 d.margin.left + d.border.left + d.padding.left;
-        d.content.y = containing_block.containing_block.height + containing_block.content.y +
+        d.content.y = containing_block.content.height + containing_block.content.y +
                 d.margin.top + d.border.top + d.padding.top;
     }
 
