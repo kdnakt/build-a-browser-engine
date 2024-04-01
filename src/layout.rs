@@ -184,7 +184,14 @@ impl<'a> LayoutBox<'a> {
             }
         }
 
-        todo!();
+        let d = &mut self.dimensions;
+        d.content.width = width.to_px();
+        d.padding.left = padding_left.to_px();
+        d.padding.right = padding_right.to_px();
+        d.border.left = border_left.to_px();
+        d.border.right = border_right.to_px();
+        d.margin.left = margin_left.to_px();
+        d.margin.right = margin_right.to_px();
     }
 
     fn calculate_block_position(&mut self, containing_block: Dimensions) {
