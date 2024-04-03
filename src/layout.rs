@@ -223,7 +223,9 @@ impl<'a> LayoutBox<'a> {
     }
 
     fn calculate_block_height(&mut self) {
-        todo!();
+        if let Some(Length(h, Px)) = self.get_style_node().value("height") {
+            self.dimensions.content.height = h;
+        }
     }
 }
 
