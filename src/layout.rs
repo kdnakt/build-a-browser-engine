@@ -21,7 +21,7 @@ struct Dimensions {
 }
 
 #[derive(Clone, Copy, Default)]
-struct Rect {
+pub struct Rect {
     x: f32,
     y: f32,
     width: f32,
