@@ -11,7 +11,7 @@ use crate::css::{
 };
 
 #[derive(Clone, Copy, Default)]
-struct Dimensions {
+pub struct Dimensions {
     /// Position of the content area relative to the document origin
     content: Rect,
     // Surrounding edges
@@ -37,12 +37,12 @@ struct EdgeSizes {
 }
 
 pub struct LayoutBox<'a> {
-    dimensions: Dimensions,
-    box_type: BoxType<'a>,
+    pub dimensions: Dimensions,
+    pub box_type: BoxType<'a>,
     children: Vec<LayoutBox<'a>>,
 }
 
-enum BoxType<'a> {
+pub enum BoxType<'a> {
     BlockNode(&'a StyledNode<'a>),
     InlineNode(&'a StyledNode<'a>),
     AnonymousBlock,
@@ -244,7 +244,7 @@ impl Dimensions {
     fn margin_box(self) -> Rect {
         self.border_box().expanded_by(self.margin)
     }
-    fn border_box(self) -> Rect {
+    pub fn border_box(self) -> Rect {
         self.padding_box().expanded_by(self.border)
     }
     fn padding_box(self) -> Rect {
