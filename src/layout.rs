@@ -16,24 +16,24 @@ pub struct Dimensions {
     content: Rect,
     // Surrounding edges
     padding: EdgeSizes,
-    border: EdgeSizes,
+    pub border: EdgeSizes,
     margin: EdgeSizes,
 }
 
 #[derive(Clone, Copy, Default)]
 pub struct Rect {
-    x: f32,
-    y: f32,
-    width: f32,
-    height: f32,
+    pub x: f32,
+    pub y: f32,
+    pub width: f32,
+    pub height: f32,
 }
 
 #[derive(Clone, Copy, Default)]
-struct EdgeSizes {
-    left: f32,
-    right: f32,
-    top: f32,
-    bottom: f32,
+pub struct EdgeSizes {
+    pub left: f32,
+    pub right: f32,
+    pub top: f32,
+    pub bottom: f32,
 }
 
 pub struct LayoutBox<'a> {

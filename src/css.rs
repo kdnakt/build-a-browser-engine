@@ -59,6 +59,8 @@ pub struct Color {
     a: u8,
 }
 
+impl Copy for Color {}
+
 lazy_static! {
     static ref COLOR_NAME: HashMap<&'static str, Vec<u8>> = {
         let mut map = HashMap::new();
