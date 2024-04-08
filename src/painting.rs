@@ -7,6 +7,7 @@ use crate::layout::{
     LayoutBox,
     Rect,
 };
+use std::iter::repeat;
 
 type DisplayList = Vec<DisplayCommand>;
 
@@ -80,4 +81,21 @@ fn render_borders(list: &mut DisplayList, layout_box: &LayoutBox) {
         width: border_box.width,
         height: d.border.bottom,
     }));
+}
+
+struct Canvas {
+    pixels: Vec<Color>,
+    width: usize,
+    height: usize,
+}
+
+impl Canvas {
+    fn new(width: usize, height: usize) -> Canvas {
+        let white = Color { r: 255, g: 255, b: 255, a: 255 };
+        Canvas {
+            pixels: repeat(white).take(width * height).collect(),
+            width,
+            height,
+        }
+    }
 }
