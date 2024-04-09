@@ -117,3 +117,12 @@ impl Canvas {
         }
     }
 }
+
+fn paint(layout_root: &LayoutBox, bounds: Rect) -> Canvas {
+    let display_list = build_display_list(layout_root);
+    let mut canvas = Canvas::new(bounds.width as usize, bounds.height as usize);
+    for item in display_list {
+        canvas.paint_item(&item);
+    }
+    canvas
+}
