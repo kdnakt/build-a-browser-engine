@@ -31,4 +31,12 @@ fn main() {
     // let mut parser = parser::Parser::new(html.to_string());
     // println!("{}", parser.consume_char());
     println!("parsed: {:?}", parser::parse(html.to_string()));
+
+    let read_source = |path: &str| {
+        std::fs::read_to_string(path).unwrap()
+    };
+    let html = read_source("examples/test.html");
+    let css = read_source("examples/test.css");
+    println!("html: {html}");
+    println!("css: {css}");
 }
