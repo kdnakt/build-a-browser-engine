@@ -13,11 +13,11 @@ use crate::css::{
 #[derive(Clone, Copy, Default)]
 pub struct Dimensions {
     /// Position of the content area relative to the document origin
-    content: Rect,
+    pub content: Rect,
     // Surrounding edges
-    padding: EdgeSizes,
+    pub padding: EdgeSizes,
     pub border: EdgeSizes,
-    margin: EdgeSizes,
+    pub margin: EdgeSizes,
 }
 
 #[derive(Clone, Copy, Default)]

@@ -37,6 +37,10 @@ fn main() {
     };
     let html = read_source("examples/test.html");
     let css = read_source("examples/test.css");
-    println!("html: {html}");
-    println!("css: {css}");
+    let initial_containing_block = layout::Dimensions {
+        content: layout::Rect { x: 0.0, y: 0.0, width: 800.0, height: 600.0 },
+        padding: Default::default(),
+        border: Default::default(),
+        margin: Default::default(),
+    };
 }
