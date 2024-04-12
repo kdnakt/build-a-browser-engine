@@ -43,4 +43,9 @@ fn main() {
         border: Default::default(),
         margin: Default::default(),
     };
+
+    let root_node = parser::parse(html);
+    let stylesheet = css::parse(css);
+    let style_root = style::style_tree(&root_node, &stylesheet);
+    let layout_root = layout::layout_tree(&style_root, initial_containing_block);
 }
