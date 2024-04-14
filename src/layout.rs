@@ -39,7 +39,7 @@ pub struct EdgeSizes {
 pub struct LayoutBox<'a> {
     pub dimensions: Dimensions,
     pub box_type: BoxType<'a>,
-    children: Vec<LayoutBox<'a>>,
+    pub children: Vec<LayoutBox<'a>>,
 }
 
 pub enum BoxType<'a> {

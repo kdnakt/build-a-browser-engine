@@ -26,7 +26,9 @@ fn render_layout_box(list: &mut DisplayList, layout_box: &LayoutBox) {
     render_borders(list, layout_box);
     // TODO: render text
 
-    todo!();
+    for child in &layout_box.children {
+        render_layout_box(list, child);
+    }
 }
 
 fn render_background(list: &mut DisplayList, layout_box: &LayoutBox) {
