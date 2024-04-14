@@ -84,9 +84,9 @@ fn render_borders(list: &mut DisplayList, layout_box: &LayoutBox) {
 }
 
 pub struct Canvas {
-    pixels: Vec<Color>,
-    width: usize,
-    height: usize,
+    pub pixels: Vec<Color>,
+    pub width: usize,
+    pub height: usize,
 }
 
 impl Canvas {

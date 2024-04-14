@@ -1,4 +1,8 @@
+extern crate image;
+
 use std::collections::HashMap;
+use std::path::Path;
+use std::fs::File;
 
 mod css;
 mod dom;
@@ -50,4 +54,8 @@ fn main() {
     let layout_root = layout::layout_tree(&style_root, initial_containing_block);
 
     let canvas = painting::paint(&layout_root, initial_containing_block.content);
+
+    let file = File::create(&Path::new("output.png")).unwrap();
+    let (w, h) = (canvas.width as u32, canvas.height as u32);
+    let buffer: Vec<image::Rgba<u8>> = unsafe { std::mem::transmute(canvas.pixels) };
 }
