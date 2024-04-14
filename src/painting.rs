@@ -83,7 +83,7 @@ fn render_borders(list: &mut DisplayList, layout_box: &LayoutBox) {
     }));
 }
 
-struct Canvas {
+pub struct Canvas {
     pixels: Vec<Color>,
     width: usize,
     height: usize,
@@ -118,7 +118,7 @@ impl Canvas {
     }
 }
 
-fn paint(layout_root: &LayoutBox, bounds: Rect) -> Canvas {
+pub fn paint(layout_root: &LayoutBox, bounds: Rect) -> Canvas {
     let display_list = build_display_list(layout_root);
     let mut canvas = Canvas::new(bounds.width as usize, bounds.height as usize);
     for item in display_list {

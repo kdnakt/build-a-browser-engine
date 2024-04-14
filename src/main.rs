@@ -48,4 +48,6 @@ fn main() {
     let stylesheet = css::parse(css);
     let style_root = style::style_tree(&root_node, &stylesheet);
     let layout_root = layout::layout_tree(&style_root, initial_containing_block);
+
+    let canvas = painting::paint(&layout_root, initial_containing_block.content);
 }
