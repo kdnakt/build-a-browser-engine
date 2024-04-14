@@ -7,6 +7,4 @@ edition = "2021"
 
 [dependencies]
 lazy_static = "1.4.0"
-
-[dependencies.image]
-git = "https://github.com/PistonDevelopers/image"
+image = "0.14"

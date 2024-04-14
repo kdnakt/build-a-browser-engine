@@ -55,7 +55,14 @@ fn main() {
 
     let canvas = painting::paint(&layout_root, initial_containing_block.content);
 
-    let file = File::create(&Path::new("output.png")).unwrap();
+    let mut file = File::create(&Path::new("output.png")).unwrap();
     let (w, h) = (canvas.width as u32, canvas.height as u32);
     let buffer: Vec<image::Rgba<u8>> = unsafe { std::mem::transmute(canvas.pixels) };
+    let img = image::ImageBuffer::from_fn(w, h, Box::new(|x: u32, y: u32| buffer[(y * w + x) as usize]));
+
+    let result = image::DynamicImage::ImageRgba8(img).save(&mut file, image::PNG);
+    match result {
+        Ok(_) => println!("Saved output"),
+        Err(_) => println!("Error")
+    }
 }
