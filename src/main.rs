@@ -1,8 +1,11 @@
 extern crate image;
+extern crate getopts;
 
+use getopts::Options;
 use std::collections::HashMap;
 use std::path::Path;
 use std::fs::File;
+use std::env;
 
 mod css;
 mod dom;
@@ -36,6 +39,14 @@ fn main() {
     // println!("{}", parser.consume_char());
     println!("parsed: {:?}", parser::parse(html.to_string()));
 
+    let args: Vec<String> = env::args().collect();
+    let mut opts = Options::new();
+    opts.optopt("o", "output", "Output file", "FILENAME");
+    let matches = match opts.parse(&args[1..]) {
+        Ok(m) => m,
+        Err(f) => panic!("{}", f.to_string())
+    };
+
     let read_source = |path: &str| {
         std::fs::read_to_string(path).unwrap()
     };
@@ -55,7 +66,8 @@ fn main() {
 
     let canvas = painting::paint(&layout_root, initial_containing_block.content);
 
-    let mut file = File::create(&Path::new("output.png")).unwrap();
+    let filename = matches.opt_str("o").unwrap_or("output.png".to_string());
+    let mut file = File::create(&Path::new(&filename)).unwrap();
     let (w, h) = (canvas.width as u32, canvas.height as u32);
     let buffer: Vec<image::Rgba<u8>> = unsafe { std::mem::transmute(canvas.pixels) };
     let img = image::ImageBuffer::from_fn(w, h, Box::new(|x: u32, y: u32| buffer[(y * w + x) as usize]));
