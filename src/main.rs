@@ -41,6 +41,8 @@ fn main() {
 
     let args: Vec<String> = env::args().collect();
     let mut opts = Options::new();
+    opts.optopt("h", "html", "HTML document", "FILENAME");
+    opts.optopt("c", "css", "CSS stylesheet", "FILENAME");
     opts.optopt("o", "output", "Output file", "FILENAME");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
@@ -50,8 +52,8 @@ fn main() {
     let read_source = |path: &str| {
         std::fs::read_to_string(path).unwrap()
     };
-    let html = read_source("examples/test.html");
-    let css = read_source("examples/test.css");
+    let html = read_source(&matches.opt_str("h").unwrap_or("examples/test.html".to_string()));
+    let css = read_source(&matches.opt_str("c").unwrap_or("examples/test.css".to_string()));
     let initial_containing_block = layout::Dimensions {
         content: layout::Rect { x: 0.0, y: 0.0, width: 800.0, height: 600.0 },
         padding: Default::default(),
